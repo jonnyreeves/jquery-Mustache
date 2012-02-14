@@ -93,7 +93,7 @@
 	 * object.  Note if the supplied templateName doesn't exist an empty jQuery 
 	 * element will be returned.
 	 */
-	function render(templateName, templateData, partials) {
+	function render(templateName, templateData) {
 		var template = _templateMap[templateName];
 		
 		if (!has(templateName)) {
@@ -103,7 +103,7 @@
 			return $(null);
 		}
 		
-		return $(getMustache().to_html(template, templateData, partials));
+		return $(getMustache().to_html(template, templateData, _templateMap));
 	};
 	
 	/**
@@ -148,17 +148,16 @@
 	 *							and / or added.
 	 * @param templateData		JavaScript object which will be used to render the 
 	 * 							Mustache template.
-	 * @param partials			Mustache partials to supply when rendering.
 	 * @param options.method	jQuery method to use when rendering, defaults to 'html' which
 	 * 							replaces the contents of the current selector.
 	 */
-	$.fn.mustache = function(templateName, templateData, partials, options) {
+	$.fn.mustache = function(templateName, templateData, options) {
 		var settings = $.extend({
 			method:	'html'
 		}, options);
 		
 		// Attach the contents to the current selector using the supplied method.
-		this[settings.method](render(templateName, templateData, partials));
+		this[settings.method](render(templateName, templateData));
 		
 		return this;
 	};
