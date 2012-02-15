@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js" type="text/javascript"></script>
+		<script src="https://raw.github.com/janl/mustache.js/master/mustache.js" type="text/javascript"></script>
+		<script src="../src/jquery-Mustache.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			(function ($) {
+				// Configure jquery-Mustache to warn on missing tempaltes (to aid debugging)
+				$.Mustache.options.warnOnMissingTemplates = true;
+				
+				// Load in our templates and await callback.
+				$.Mustache.load('templates.htm')
+					.done(onTemplatesLoaded);
+				
+				function onTemplatesLoaded() {
+					// List all loaded templates.
+					$('body').append('<p>Templates loaded: ' + $.Mustache.templates() + '</p>');
+					
+					// Render an example template
+					$('body').append($.Mustache.render('hello-world', { name: 'Jonny' }));
+
+					// We can also directly call `mustache` on a jQuery element
+					$('body').mustache('hello-world', { name: 'Dave' }, { method: 'append' });
+					
+					// jQuery-Mustache supports partials (including templates inside other templates).
+					$('body').append($.Mustache.render('partial-example', { name: 'Jonny', title: 'A Partial Example' }));
+					
+					// We can add new templates as Strings at runtime.
+					$.Mustache.add('string-template', '<p>String templates are {{adjective}}</p>');
+					$('body').append($.Mustache.render('string-template', { adjective: '...epic?' }));
+				}
+				
+			})(jQuery);
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
