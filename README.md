@@ -17,9 +17,11 @@ As with all jQuery plugins, just ensure that you load jQuery before you load jQu
 ## Usage
 Lets get down to it and load an external template and then render it.
 
-    var viewData = { name: 'Jonny' };
-    $.Mustache.load("./templates/greetings.htm, function() {
-        $('body').mustache('simple-hello', viewData);
+	var viewData = { name: 'Jonny' };
+    $.Mustache.load("./templates/greetings.htm)
+    	.done(function () {
+        	$('body').mustache('simple-hello', viewData);
+        });
     });
 
 In the above example we are loading an external template HTML file (`greetings.htm`) and, once it's finished loading we render it out replacing the contents of the `body` element.  Your templates should be defined in a script block in the external HTML file where the script block's id will define the template's name, eg:
@@ -41,9 +43,28 @@ There are two ways to render a Mustache template, either via the global `$.Musta
 The jQuery `mustache` selector defaults to replacing the contents of the selected element; however you can change this behaviour by passing a `method` in the options argument:
 
     // Append the rendered Mustache template to #someElement.
-    $('#someElement').mustache('my-template', viewData, null, { method: 'append' });
+    $('#someElement').mustache('my-template', viewData, { method: 'append' });
 
     // Prepend the rendered Mustache template to #someElement.
-    $('#someElement').mustache('my-template', viewData, null, { method: 'prepend' });
+    $('#someElement').mustache('my-template', viewData, { method: 'prepend' });
 
 To help you debug you can fetch a list of all registered templates via `$.Mustache.templates()` and when you're done, you can call `$.Mustache.clear()` to remove all templates.
+
+jQuery-Mustache plays nicely with [partials](http://scalate.fusesource.org/documentation/mustache.html#Partials) as well, no muss, no fuss, just drop the partial into your template, ensure that it's been loaded and jQuery-Mustache will take care of the rest:
+
+	<!-- Templates.htm -->
+	<script id="footer-fragment" type="text/html">
+		<p>&copy; Jonny {{year}}</p>
+	</script>
+	<script id="webcontent" type="text/html">
+		<h1><blink>My {{adjective}} WebSite!</blink></h1>
+		
+		{{! Insert the `footer-fragment` template below }}
+		{{>footer-fragment}}
+	</script>
+
+	$.Mustache.load('templates.htm')
+		.done(function () {
+			// Renders the `webcontent` template and the `footer-fragment` template to the page.
+			$('body').mustache('webcontent', { year: 2012, adjective: 'EPIC' }); 
+		});
