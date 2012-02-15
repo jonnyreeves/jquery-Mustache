@@ -1,5 +1,5 @@
 /**
- * jQuery Mustache Plugin v0.1
+ * jQuery Mustache Plugin v0.2
  * 
  * @author Jonny Reeves (http://jonnyreeves.co.uk/)
  * 
@@ -22,13 +22,12 @@
 	var _instance = null;
 	
 	var _options = {
-		// Should an error be thrown if an attempt is made to render a non-existant
-		// template.  If true, the operation will fail silently.
+		// Should an error be thrown if an attempt is made to render a non-existant template.  If true, the operation 
+		// will fail silently.
 		allowUndefinedTemplates: true,
 		
-		// Should an error be thrown if an attempt is made to overwrite a template
-		// which has already been added.  If true the original template will be 
-		// overwritten with the new value.
+		// Should an error be thrown if an attempt is made to overwrite a template which has already been added.  
+		// If true the original template will be overwritten with the new value.
 		allowOverwrite: true
 	};
 
@@ -36,10 +35,9 @@
 	 * Registers a template so that it can be used by Mustache.
 	 * 
 	 * @param templateName		A name which uniquely identifies this template.
-	 * @param templateHtml		The HTML which makes us the template; this will be rendered by
-	 * 							Mustache when render() is invoked.
-	 * @throws					If options.allowOverwrite is false and the templateName has
-	 * 							already been registered.
+	 * @param templateHtml		The HTML which makes us the template; this will be rendered by Mustache when render() 
+	 * 							is invoked.
+	 * @throws					If options.allowOverwrite is false and the templateName has already been registered.
 	 */
 	function add(templateName, templateHtml) {
 		if (!_options.allowOverwrite && has(templateName)) {
@@ -74,24 +72,27 @@
 	}
 	
 	/**
-	 * Loads the external Mustache templates located at the supplied URL and registers
-	 * them for later use.  The supplied onComplete callback will be invoked after the
-	 * operation completes.
+	 * Loads the external Mustache templates located at the supplied URL and registers them for later use.  This method
+	 * returns a jQuery Promise and also support an `onComplete` callback.
 	 */
 	function load(url, onComplete) {
-		$.get(url, function(templates) {
-			$(templates).filter('script').each(function(i, el) {
-				add(el.id, $(el).html());
-			});
-			
-			$.isFunction(onComplete) && onComplete();
-		});
-	};
+		return $.Deferred(function(dfd) {
+			$.get(url)
+				.done(function(templates) { 
+					$(templates).filter('script').each(function(i, el) {
+						add(el.id, $(el).html());
+					});
+					
+					$.isFunction(onComplete) && onComplete();
+					dfd.resolve();
+				})
+				.fail(dfd.reject);
+		}).promise();
+	}
 	
 	/**
-	 * Renders a previously added Mustache template using the supplied templateData
-	 * object.  Note if the supplied templateName doesn't exist an empty jQuery 
-	 * element will be returned.
+	 * Renders a previously added Mustache template using the supplied templateData object.  Note if the supplied 
+	 * templateName doesn't exist an empty jQuery element will be returned.
 	 */
 	function render(templateName, templateData) {
 		var template = _templateMap[templateName];
@@ -107,8 +108,8 @@
 	};
 	
 	/**
-	 * Returns an Array of templateNames which have been registered and can
-	 * be retrieved via $.Mustache.render() or $(element).mustache().
+	 * Returns an Array of templateNames which have been registered and can be retrieved via $.Mustache.render() or 
+	 * $(element).mustache().
 	 */
 	function templates() {
 		return $.map(_templateMap, function(value, key) { 
