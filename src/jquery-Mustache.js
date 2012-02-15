@@ -24,7 +24,7 @@
 	var _options = {
 		// Should an error be thrown if an attempt is made to render a non-existant template.  If true, the operation 
 		// will fail silently.
-		allowUndefinedTemplates: true,
+		warnOnMissingTemplates: false,
 		
 		// Should an error be thrown if an attempt is made to overwrite a template which has already been added.  
 		// If true the original template will be overwritten with the new value.
@@ -78,9 +78,9 @@
 	function load(url, onComplete) {
 		return $.Deferred(function(dfd) {
 			$.get(url)
-				.done(function(templates) { 
+				.done(function(templates) {
 					$(templates).filter('script').each(function(i, el) {
-						add(el.id, $(el).html());
+						add(el.id, $(el).html().trim());
 					});
 					
 					$.isFunction(onComplete) && onComplete();
@@ -95,16 +95,13 @@
 	 * templateName doesn't exist an empty jQuery element will be returned.
 	 */
 	function render(templateName, templateData) {
-		var template = _templateMap[templateName];
-		
 		if (!has(templateName)) {
-			if (!_options.allowUndefinedTemplates) {
+			if (!_options.warnOnMissingTemplates) {
 				$.error('No template registered for: ' + templateName);
 			}
 			return $(null);
 		}
-		
-		return $(getMustache().to_html(template, templateData, _templateMap));
+		return $(getMustache().to_html(_templateMap[templateName], templateData, _templateMap));
 	};
 	
 	/**
@@ -157,10 +154,10 @@
 			method:	'html'
 		}, options);
 		
-		// Attach the contents to the current selector using the supplied method.
-		this[settings.method](render(templateName, templateData));
-		
-		return this;
+		return this.each(function() { 
+			// Attach the contents to the current selector using the supplied method.
+			$(this)[settings.method](render(templateName, templateData));
+		});
 	};
 	
 })(jQuery);
