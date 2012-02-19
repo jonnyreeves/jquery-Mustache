@@ -1,5 +1,5 @@
 /**
- * jQuery Mustache Plugin v0.2
+ * jQuery Mustache Plugin v0.1.2
  * 
  * @author Jonny Reeves (http://jonnyreeves.co.uk/)
  * 
