@@ -14,7 +14,7 @@
 				
 				function onTemplatesLoaded() {
 					// List all loaded templates.
-					$('body').append('<p>Templates loaded: ' + $.Mustache.templates() + '</p>');
+					$('body').append('<p>Templates loaded: ' + $.Mustache.templates().join(', ') + '</p>');
 					
 					// Render an example template
 					$('body').append($.Mustache.render('hello-world', { name: 'Jonny' }));
@@ -28,6 +28,9 @@
 					// We can add new templates as Strings at runtime.
 					$.Mustache.add('string-template', '<p>String templates are {{adjective}}</p>');
 					$('body').append($.Mustache.render('string-template', { adjective: '...epic?' }));
+					
+					// And we can render plaintext templates that have no HTML.
+					$('body').append($.Mustache.render('plaintext'));
 				}
 				
 			})(jQuery);

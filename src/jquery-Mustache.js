@@ -1,5 +1,5 @@
 /**
- * jQuery Mustache Plugin v0.1.2
+ * jQuery Mustache Plugin v0.2.0
  * 
  * @author Jonny Reeves (http://jonnyreeves.co.uk/)
  * 
@@ -24,7 +24,7 @@
 	var templateMap = {},
 		instance = null,
 		options = {
-			// Should an error be thrown if an attempt is made to render a non-existant template.  If false, the  
+			// Should an error be thrown if an attempt is made to render a non-existent template.  If false, the  
 			// operation will fail silently.
 			warnOnMissingTemplates: false,
 
@@ -70,6 +70,9 @@
 
 	/**
 	 * Removes a template, the contents of the removed Template will be returned.
+	 * 
+	 * @param templateName		The name of the previously registered Mustache template that you wish to remove.
+	 * @returns					String which represents the raw content of the template.
 	 */
 	function remove(templateName) {
 		var result = templateMap[templateName];
@@ -87,21 +90,27 @@
 
 	/**
 	 * Renders a previously added Mustache template using the supplied templateData object.  Note if the supplied 
-	 * templateName doesn't exist an empty jQuery element will be returned.
+	 * templateName doesn't exist an empty String will be returned.
 	 */
 	function render(templateName, templateData) {
 		if (!has(templateName)) {
 			if (options.warnOnMissingTemplates) {
 				$.error('No template registered for: ' + templateName);
 			}
-			return $(null);
+			return '';
 		}
-		return $(getMustache().to_html(templateMap[templateName], templateData, templateMap));
+		return getMustache().to_html(templateMap[templateName], templateData, templateMap);
 	}
 
 	/**
 	 * Loads the external Mustache templates located at the supplied URL and registers them for later use.  This method
 	 * returns a jQuery Promise and also support an `onComplete` callback.
+	 * 
+	 * @param url			URL of the external Mustache template file to load.
+	 * @param onComplete	Optional callback function which will be invoked when the templates from the supplied URL
+	 *						have been loaded and are ready for use.
+	 * @returns				jQuery deferred promise which will complete when the templates have been loaded and are
+	 *						ready for use.
 	 */
 	function load(url, onComplete) {
 		return $.Deferred(function (dfd) {

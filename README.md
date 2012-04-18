@@ -18,7 +18,7 @@ As with all jQuery plugins, just ensure that you load jQuery before you load jQu
 Lets get down to it and load an external template and then render it.
 
 	var viewData = { name: 'Jonny' };
-    $.Mustache.load("./templates/greetings.htm)
+    $.Mustache.load('./templates/greetings.htm')
     	.done(function () {
         	$('body').mustache('simple-hello', viewData);
         });
@@ -37,8 +37,8 @@ You can also add templates directly either as String literals or by referencing 
 
 There are two ways to render a Mustache template, either via the global `$.Mustache.render()` method or via the jQuery `mustache` selector:
 
-    $.Mustache.render('my-template', viewData);
-    $('#someElement').mustache('my-template', viewData);
+    $.Mustache.render('my-template', viewData);		// Returns a String (the rendered template content)
+    $('#someElement').mustache('my-template', viewData);	// Returns a jQuery selector for chaining.
 
 The jQuery `mustache` selector defaults to replacing the contents of the selected element; however you can change this behaviour by passing a `method` in the options argument:
 
@@ -68,3 +68,5 @@ jQuery-Mustache plays nicely with [partials](http://scalate.fusesource.org/docum
 			// Renders the `webcontent` template and the `footer-fragment` template to the page.
 			$('body').mustache('webcontent', { year: 2012, adjective: 'EPIC' }); 
 		});
+
+Check out the included [example file](https://github.com/jonnyreeves/jquery-Mustache/blob/master/examples/usage-example.htm) for other usage scenarios.
