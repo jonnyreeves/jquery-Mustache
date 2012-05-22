@@ -152,36 +152,35 @@
 	};
 
 	/**
-     * Renders one or more viewModels into the current jQuery element.
-     * 
-     * @param templateName The name of the Mustache template you wish to render, Note that the Template must have 
-     *							been previously loaded and / or added.
-     * @param templateData		One or more JavaScript objects which will be used to render the Mustache template.
-     * @param options.method	jQuery method to use when rendering, defaults to 'append'.
-     */
+	 * Renders one or more viewModels into the current jQuery element.
+	 * 
+	 * @param templateName The name of the Mustache template you wish to render, Note that the Template must have 
+    	 *							been previously loaded and / or added.
+    	 * @param templateData		One or more JavaScript objects which will be used to render the Mustache template.
+    	 * @param options.method	jQuery method to use when rendering, defaults to 'append'.
+    	 */
 	$.fn.mustache = function (templateName, templateData, options) {
-        var settings = $.extend({
+        	var settings = $.extend({
 			method:	'append'
 		}, options);
 
-        var renderTemplate = function (obj, viewModel) {
-            $(obj)[settings.method](render(templateName, viewModel));
-        };
+        	var renderTemplate = function (obj, viewModel) {
+            		$(obj)[settings.method](render(templateName, viewModel));
+        	};
 
-        return this.each(function () {
-            var element = this;
+        	return this.each(function () {
+            		var element = this;
 
-            // Render a collection of viewModels.
-            if ($.isArray(templateData)) {
-                $.each(templateData, function () {
-                    renderTemplate(element, this);
-                });
-            }
-            // Render a single viewModel.
-            else {
-                // Attach the contents to the current selector using the supplied method.
-                renderTemplate(element, templateData);
-            }
+            		// Render a collection of viewModels.
+            		if ($.isArray(templateData)) {
+                		$.each(templateData, function () {
+                    			renderTemplate(element, this);
+                		});
+            		}
+            		// Render a single viewModel.
+            		else {
+                		renderTemplate(element, templateData);
+			}
 		});
 	};
 
