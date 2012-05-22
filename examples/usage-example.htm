@@ -32,9 +32,9 @@
 					// And we can render plaintext templates that have no HTML.
 					$('body').append($.Mustache.render('plaintext'));
 
-                    // We can render a collection of viewModels in one line:
-                    var peeps = [{ name: "sean", fuel: "cake" }, { name: "cat", fuel: "coffee" }];
-                    $('body').append('<ul/>').mustache('peeps-list-item', peeps);
+					// We can render a collection of viewModels in one line:
+					var peeps = [{ name: "sean", fuel: "cake" }, { name: "cat", fuel: "coffee" }];
+					$('body').append('<ul/>').mustache('peeps-list-item', peeps);
 				}
 				
 			})(jQuery);
