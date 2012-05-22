@@ -40,13 +40,18 @@ There are two ways to render a Mustache template, either via the global `$.Musta
     $.Mustache.render('my-template', viewData);		// Returns a String (the rendered template content)
     $('#someElement').mustache('my-template', viewData);	// Returns a jQuery selector for chaining.
 
-The jQuery `mustache` selector defaults to replacing the contents of the selected element; however you can change this behaviour by passing a `method` in the options argument:
+The jQuery `mustache` selector defaults to appending the rendered template to the selected element; however you can change this behaviour by passing a `method` in the options argument:
 
-    // Append the rendered Mustache template to #someElement.
-    $('#someElement').mustache('my-template', viewData, { method: 'append' });
+    // Replace the contents of #someElement with the rendered template.
+    $('#someElement').mustache('my-template', viewData, { method: 'html' });
 
     // Prepend the rendered Mustache template to #someElement.
     $('#someElement').mustache('my-template', viewData, { method: 'prepend' });
+
+The `mustache` selector also allows you to pass an Array of View Models to render which makes populating lists a breeze:
+
+    // Clear #someList and then render all the viewModels using the list-template.
+    $('#someList).empty().mustache('list-template', viewModels);
 
 To help you debug you can fetch a list of all registered templates via `$.Mustache.templates()` and when you're done, you can call `$.Mustache.clear()` to remove all templates.
 

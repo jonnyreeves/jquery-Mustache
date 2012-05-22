@@ -1,5 +1,5 @@
 /**
- * jQuery Mustache Plugin v0.2.0
+ * jQuery Mustache Plugin v0.2.1
  * 
  * @author Jonny Reeves (http://jonnyreeves.co.uk/)
  * 
@@ -12,16 +12,16 @@
  * Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
- * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS  
+ * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 /*global jQuery, window */
 (function ($, window) {
-	'use strict';
+    'use strict';
 
-	var templateMap = {},
+    var templateMap = {},
 		instance = null,
 		options = {
 			// Should an error be thrown if an attempt is made to render a non-existent template.  If false, the  
@@ -152,23 +152,36 @@
 	};
 
 	/**
-	 * Render the template HTML mapped to the supplied templateName using the  supplied templateData object.   
-	 * Note the default action will replace the contents of the selected jQuery element.
-	 * 
-	 * @param templateName		The name of the Mustache template you wish to render, Note that the Template must have 
-	 *							been previously loaded and / or added.
-	 * @param templateData		JavaScript object which will be used to render the Mustache template.
-	 * @param options.method	jQuery method to use when rendering, defaults to 'html' which replaces the contents of 
-	 *							the current selector.
-	 */
+     * Renders one or more viewModels into the current jQuery element.
+     * 
+     * @param templateName The name of the Mustache template you wish to render, Note that the Template must have 
+     *							been previously loaded and / or added.
+     * @param templateData		One or more JavaScript objects which will be used to render the Mustache template.
+     * @param options.method	jQuery method to use when rendering, defaults to 'append'.
+     */
 	$.fn.mustache = function (templateName, templateData, options) {
-		var settings = $.extend({
-			method:	'html'
+        var settings = $.extend({
+			method:	'append'
 		}, options);
 
-		return this.each(function () {
-			// Attach the contents to the current selector using the supplied method.
-			$(this)[settings.method](render(templateName, templateData));
+        var renderTemplate = function (obj, viewModel) {
+            $(obj)[settings.method](render(templateName, viewModel));
+        };
+
+        return this.each(function () {
+            var element = this;
+
+            // Render a collection of viewModels.
+            if ($.isArray(templateData)) {
+                $.each(templateData, function () {
+                    renderTemplate(element, this);
+                });
+            }
+            // Render a single viewModel.
+            else {
+                // Attach the contents to the current selector using the supplied method.
+                renderTemplate(element, templateData);
+            }
 		});
 	};
 
