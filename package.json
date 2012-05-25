@@ -13,8 +13,8 @@
         }
     ],
     "dependencies": {
-        "jquery": "1",
-        "mustache": "~1.4"
+        "jquery": ">=1.4",
+        "mustache": ">=0.4"
     },
     "description": "Mustache templating for jQuery",
     "keywords": [
