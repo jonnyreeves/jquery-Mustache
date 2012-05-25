@@ -8,38 +8,68 @@
 				// Configure jquery-Mustache to warn on missing tempaltes (to aid debugging)
 				$.Mustache.options.warnOnMissingTemplates = true;
 				
-				// Load in our templates and await callback.
+				// Loading templates embedded in the DOM. (HTML)
+				$(function () { 
+					var output = $('#dom-templates-output');
+
+					// Add all templates found in the DOM (it will search for <script> blocks which 
+					// are of type 'text/html'.  Nb: jQuery.onReady must have fired before calling. 
+					$.Mustache.addFromDom();
+					
+					// Render out one of the templates.
+					output.mustache('dom-template-a', { name: 'World' });
+				});
+
+				// Load in some template from an external file.
 				$.Mustache.load('templates.htm')
-					.done(onTemplatesLoaded);
-				
-				function onTemplatesLoaded() {
-					// List all loaded templates.
-					$('body').append('<p>Templates loaded: ' + $.Mustache.templates().join(', ') + '</p>');
-					
-					// Render an example template
-					$('body').append($.Mustache.render('hello-world', { name: 'Jonny' }));
+					.fail(function () { 
+						$('#external-templates-output').append('Failed to load templates from <code>templates.htm</code>');
+					})
+					.done(function () { 
+						var output = $('#external-templates-output');
 
-					// We can also directly call `mustache` on a jQuery element
-					$('body').mustache('hello-world', { name: 'Dave' }, { method: 'append' });
-					
-					// jQuery-Mustache supports partials (including templates inside other templates).
-					$('body').append($.Mustache.render('partial-example', { name: 'Jonny', title: 'A Partial Example' }));
-					
-					// We can add new templates as Strings at runtime.
-					$.Mustache.add('string-template', '<p>String templates are {{adjective}}</p>');
-					$('body').append($.Mustache.render('string-template', { adjective: '...epic?' }));
-					
-					// And we can render plaintext templates that have no HTML.
-					$('body').append($.Mustache.render('plaintext'));
-
-					// We can render a collection of viewModels in one line:
-					var peeps = [{ name: "sean", fuel: "cake" }, { name: "cat", fuel: "coffee" }];
-					$('body').append('<ul/>').mustache('peeps-list-item', peeps);
-				}
+						// List all loaded templates.
+						output.append('<p>Templates loaded from <code>templates.htm</code>: ' + $.Mustache.templates().join(', ') + '</p>');
+						
+						// Render an example template
+						output.append($.Mustache.render('hello-world', { name: 'Jonny' }));
+	
+						// We can also directly call `mustache` on a jQuery element
+						output.mustache('hello-world', { name: 'Dave' });
+						
+						// jQuery-Mustache supports partials (including templates inside other templates).
+						output.append($.Mustache.render('partial-example', { name: 'Jonny', title: 'A Partial Example' }));
+						
+						// We can add new templates as Strings at runtime.
+						$.Mustache.add('string-template', '<p>String templates are {{adjective}}</p>');
+						output.append($.Mustache.render('string-template', { adjective: '...epic?' }));
+						
+						// And we can render plaintext templates that have no HTML.
+						output.append($.Mustache.render('plaintext'));
+	
+						// We can render a collection of viewModels instead of one-at-a-time.
+						var peeps = [{ name: "sean", fuel: "cake" }, { name: "cat", fuel: "coffee" }];
+						output.append('<ul/>').mustache('peeps-list-item', peeps);
+					});
 				
 			})(jQuery);
 		</script>
 	</head>
 	<body>
+		<h1>jQuery-Mustache Examples</h1>
+
+		<div id="dom-templates-output">
+			<h2>DOM Template examples</h2>
+		</div>
+
+		<div id="external-templates-output">
+			<h2>External Template examples</h2>
+		</div>
+
+		<!-- Templates in the DOM -->
+		<script type="text/html" id="dom-template-a">
+			<p>Hello, {{name}}, did you know you can load templates direct from the DOM?</p>
+		</script>
+
 	</body>
 </html>
