@@ -54,3 +54,79 @@ QUnit.test("clear() removes all templates and flushes the Mustache cache.", func
 	QUnit.ok($.error.calledOnce, "Template was removed");
 	QUnit.ok(window.Mustache.clearCache.calledOnce, "Mustache cache was cleared");
 });
+
+QUnit.test("render() returns empty string if template not mapped and warnOnMissingTemplates is false", function () {
+	this.stub($, 'error').throws("$.error should not have been invoked");
+	
+	$.Mustache.options.warnOnMissingTemplates = false;
+	var result = $.Mustache.render('missingTemplate');
+	
+	QUnit.equal(result, '', "Empty String returned");
+});
+
+QUnit.test("render() calls $.error if template not mapped and warnOnMissingTemplates is true", function () {
+	this.stub($, 'error');
+	
+	$.Mustache.options.warnOnMissingTemplates = true;
+	$.Mustache.render('missingTemplate');
+	
+	QUnit.ok($.error.calledOnce, "$.error invoked");
+});
+
+QUnit.test("render() invoked Mustache.to_html with all the relevant bits and bobs", function () { 
+	var spy = this.spy(window.Mustache, 'to_html');
+	var viewModel = { };
+	var expectedTemplateMap = {
+			templateOne: 'A Template',
+			templateTwo: 'Another Template'
+	};
+	
+	// Register all templates.
+	for (var key in expectedTemplateMap) {
+		$.Mustache.add(key, expectedTemplateMap[key]);
+	}
+	
+	$.Mustache.render('templateOne', viewModel);
+	
+	QUnit.ok(spy.calledOnce);
+	QUnit.ok(spy.calledWith('A Template', viewModel));
+	QUnit.deepEqual(spy.firstCall.args[2], expectedTemplateMap, "Template map supplied");
+});
+
+QUnit.test("templates() returns all registered templates", function () { 
+	var expected = [ 'a', 'b', 'c' ];
+	
+	// Register all templates.
+	$.each(expected, function () { 
+		$.Mustache.add(this, this);
+	});
+	
+	// Result order is not guaranteed
+	QUnit.deepEqual($.Mustache.templates().sort(), expected);
+});
+
+QUnit.test("templates() returns empty Array if no templates are registered", function () { 
+	QUnit.deepEqual([], $.Mustache.templates());
+});
+
+QUnit.test("remove() does what it says on the tin", function () { 
+	$.Mustache.add('name', 'template');
+	$.Mustache.remove('name');
+	
+	$.Mustache.options.warnOnMissingTemplates = true;
+	
+	this.stub($, 'error');
+	$.Mustache.render('name');
+	
+	QUnit.ok($.error.calledOnce);
+});
+
+QUnit.test("remove() returns the previous template value", function () { 
+	$.Mustache.add('name', 'template');
+	
+	QUnit.equal($.Mustache.remove('name'), 'template');
+});
+
+QUnit.test("remove() returns `undefined` if template was not previously mapped", function () { 
+	QUnit.equal($.Mustache.remove('unregistered'), void 0);
+});
