@@ -1,19 +1,19 @@
 /**
  * jQuery Mustache Plugin v0.2.3
- * 
+ *
  * @author Jonny Reeves (http://jonnyreeves.co.uk/)
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the 
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to  
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the 
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
  * Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
- * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS  
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
@@ -24,15 +24,15 @@
     var templateMap = {},
 		instance = null,
 		options = {
-			// Should an error be thrown if an attempt is made to render a non-existent template.  If false, the  
+			// Should an error be thrown if an attempt is made to render a non-existent template.  If false, the
 			// operation will fail silently.
 			warnOnMissingTemplates: false,
 
-			// Should an error be thrown if an attempt is made to overwrite a template which has already been added.  
+			// Should an error be thrown if an attempt is made to overwrite a template which has already been added.
 			// If true the original template will be overwritten with the new value.
 			allowOverwrite: true,
-			
-			// The 'type' attribute which you use to denoate a Mustache Template in the DOM; eg: 
+
+			// The 'type' attribute which you use to denoate a Mustache Template in the DOM; eg:
 			// `<script type="text/html" id="my-template"></script>`
 			domTemplateType: 'text/html'
 		};
@@ -42,7 +42,7 @@
 		// the User.
 		if (instance === null) {
 			instance = window.Mustache;
-			if (typeof (instance) === 'undefined') {
+			if (instance === void 0) {
 				$.error("Failed to locate Mustache instance, are you sure it has been loaded?");
 			}
 		}
@@ -53,14 +53,14 @@
 	 * Returns true if the supplied templateName has been added.
 	 */
 	function has(templateName) {
-		return typeof (templateMap[templateName]) !== 'undefined';
+		return templateMap[templateName] !== void 0;
 	}
 
 	/**
 	 * Registers a template so that it can be used by $.Mustache.
-	 * 
+	 *
 	 * @param templateName		A name which uniquely identifies this template.
-	 * @param templateHtml		The HTML which makes us the template; this will be rendered by Mustache when render() 
+	 * @param templateHtml		The HTML which makes us the template; this will be rendered by Mustache when render()
 	 *							is invoked.
 	 * @throws					If options.allowOverwrite is false and the templateName has already been registered.
 	 */
@@ -71,11 +71,11 @@
 		}
 		templateMap[templateName] = $.trim(templateHtml);
 	}
-	
+
 	/**
 	 * Adds one or more tempaltes from the DOM using either the supplied templateElementIds or by retrieving all script
 	 * tags of the 'domTemplateType'.  Templates added in this fashion will be registered with their elementId value.
-	 * 
+	 *
 	 * @param templateElementId	ElementId of a script block which contains the template you wish to add
 	 */
 	function addFromDom() {
@@ -99,12 +99,12 @@
 			else {
 				add(this, templateHtml);
 			}
-		});	
+		});
 	}
 
 	/**
 	 * Removes a template, the contents of the removed Template will be returned.
-	 * 
+	 *
 	 * @param templateName		The name of the previously registered Mustache template that you wish to remove.
 	 * @returns					String which represents the raw content of the template.
 	 */
@@ -123,7 +123,7 @@
 	}
 
 	/**
-	 * Renders a previously added Mustache template using the supplied templateData object.  Note if the supplied 
+	 * Renders a previously added Mustache template using the supplied templateData object.  Note if the supplied
 	 * templateName doesn't exist an empty String will be returned.
 	 */
 	function render(templateName, templateData) {
@@ -139,7 +139,7 @@
 	/**
 	 * Loads the external Mustache templates located at the supplied URL and registers them for later use.  This method
 	 * returns a jQuery Promise and also support an `onComplete` callback.
-	 * 
+	 *
 	 * @param url			URL of the external Mustache template file to load.
 	 * @param onComplete	Optional callback function which will be invoked when the templates from the supplied URL
 	 *						have been loaded and are ready for use.
@@ -164,7 +164,7 @@
 	}
 
 	/**
-	 * Returns an Array of templateNames which have been registered and can be retrieved via 
+	 * Returns an Array of templateNames which have been registered and can be retrieved via
 	 * $.Mustache.render() or $(element).mustache().
 	 */
 	function templates() {
@@ -188,8 +188,8 @@
 
 	/**
 	 * Renders one or more viewModels into the current jQuery element.
-	 * 
-	 * @param templateName	The name of the Mustache template you wish to render, Note that the 
+	 *
+	 * @param templateName	The name of the Mustache template you wish to render, Note that the
 	 *						Template must have 	been previously loaded and / or added.
 	 * @param templateData	One or more JavaScript objects which will be used to render the Mustache
 	 * 						template.
@@ -203,7 +203,7 @@
 		var renderTemplate = function (obj, viewModel) {
 			$(obj)[settings.method](render(templateName, viewModel));
 		};
-		
+
 		return this.each(function () {
 			var element = this;
 
@@ -213,7 +213,7 @@
 					renderTemplate(element, this);
 				});
 			}
-			
+
 			// Render a single viewModel.
 			else {
 				renderTemplate(element, templateData);
