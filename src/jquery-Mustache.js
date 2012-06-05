@@ -151,7 +151,7 @@
 			$.get(url)
 				.done(function (templates) {
 					$(templates).filter('script').each(function (i, el) {
-						add(el.id, $(el).html().trim());
+						add(el.id, $.trim($(el).html()));
 					});
 
 					if ($.isFunction(onComplete)) {
