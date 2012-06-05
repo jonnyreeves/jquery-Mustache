@@ -106,7 +106,7 @@ QUnit.test("templates() returns all registered templates", function () {
 });
 
 QUnit.test("templates() returns empty Array if no templates are registered", function () { 
-	QUnit.deepEqual([], $.Mustache.templates());
+	QUnit.deepEqual($.Mustache.templates(), []);
 });
 
 QUnit.test("remove() does what it says on the tin", function () { 
