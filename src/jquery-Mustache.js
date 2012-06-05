@@ -149,8 +149,10 @@
 	function load(url, onComplete) {
 		return $.get(url)
 				.done(function (templates) {
-					$(templates).filter('script').each(function (i, el) {
-						add(el.id, $(el).html());
+					$(templates).filter('script').each(function () {
+						if (this.id) {
+							add(this.id, $(this).html());
+						}
 					});
 
 					if ($.isFunction(onComplete)) {
