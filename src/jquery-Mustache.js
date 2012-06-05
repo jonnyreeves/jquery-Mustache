@@ -147,8 +147,7 @@
 	 *						ready for use.
 	 */
 	function load(url, onComplete) {
-		return $.Deferred(function (dfd) {
-			$.get(url)
+		return $.get(url)
 				.done(function (templates) {
 					$(templates).filter('script').each(function (i, el) {
 						add(el.id, $(el).html());
@@ -157,10 +156,7 @@
 					if ($.isFunction(onComplete)) {
 						onComplete();
 					}
-					dfd.resolve();
-				})
-				.fail(dfd.reject);
-		}).promise();
+				});
 	}
 
 	/**
