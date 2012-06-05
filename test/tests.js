@@ -130,3 +130,11 @@ QUnit.test("remove() returns the previous template value", function () {
 QUnit.test("remove() returns `undefined` if template was not previously mapped", function () { 
 	QUnit.equal($.Mustache.remove('unregistered'), void 0);
 });
+
+QUnit.test("Templates are trimmed of leading and trailing whitespace when added", function () { 
+	var source = " \t Lots of  leading\twhitespace!!\t";
+	var expected = "Lots of  leading\twhitespace!!";
+	
+	$.Mustache.add('name', source);
+	QUnit.equal($.Mustache.render('name'), expected);
+});

@@ -1,5 +1,5 @@
 /**
- * jQuery Mustache Plugin v0.2.2
+ * jQuery Mustache Plugin v0.2.3
  * 
  * @author Jonny Reeves (http://jonnyreeves.co.uk/)
  * 
@@ -57,7 +57,7 @@
 	}
 
 	/**
-	 * Registers a template so that it can be used by Mustache.
+	 * Registers a template so that it can be used by $.Mustache.
 	 * 
 	 * @param templateName		A name which uniquely identifies this template.
 	 * @param templateHtml		The HTML which makes us the template; this will be rendered by Mustache when render() 
@@ -69,7 +69,7 @@
 			$.error('TemplateName: ' + templateName + ' is already mapped.');
 			return;
 		}
-		templateMap[templateName] = templateHtml;
+		templateMap[templateName] = $.trim(templateHtml);
 	}
 	
 	/**
@@ -97,7 +97,7 @@
 				$.error('No such elementId: #' + this);
 			}
 			else {
-				add(this, templateHtml.trim());
+				add(this, templateHtml);
 			}
 		});	
 	}
@@ -151,7 +151,7 @@
 			$.get(url)
 				.done(function (templates) {
 					$(templates).filter('script').each(function (i, el) {
-						add(el.id, $.trim($(el).html()));
+						add(el.id, $(el).html());
 					});
 
 					if ($.isFunction(onComplete)) {
