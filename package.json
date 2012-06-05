@@ -1,7 +1,7 @@
 {
     "name": "jquery-mustache",
-    "version": "0.2.2",
-    "title": "jQuery.Mustache()",
+    "version": "0.2.3",
+    "title": "jQuery.Mustache Plugin",
     "author": {
         "name": "Jonny Reeves",
         "url": "http://jonnyreeves.co.uk/"
@@ -13,7 +13,7 @@
         }
     ],
     "dependencies": {
-        "jquery": ">=1.4",
+        "jquery": ">=1.5",
         "mustache": ">=0.4"
     },
     "description": "Mustache templating for jQuery",

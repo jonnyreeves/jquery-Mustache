@@ -5,7 +5,7 @@
 ## Installation
 jQuery-Mustache has two dependencies:
 
- * [jQuery](http://jquery.com/) 1.4 or later.
+ * [jQuery](http://jquery.com/) 1.5 or later.
  * [Mustache.js](https://github.com/janl/mustache.js/) 0.4 or later.
 
 As with all jQuery plugins, just ensure that you load jQuery before you load jQuery-mustache.js, for example:
