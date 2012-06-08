@@ -35,10 +35,10 @@ You can also add templates directly either as String literals or by referencing 
     $.Mustache.add('string-template', '<p>Hi, {{name}}, this is an inline template<p>');
     
     // These two are identical, the latter just provides a terser syntax.
-    $.Mustache.add('dom-template', $('#some-element').html().trim());
-    $.Mustache.addFromDom('dom-template', 'another-dom-template');
+    $.Mustache.add('dom-template', $('#dom-template').html());
+    $.Mustache.addFromDom('dom-template');
 
-If you prefer to have all your templates stored in the DOM (as opposed to loading them from external files) then you can just call `$.Mustache.addFromDom()` without any arguments, this will read in all templates from any `<script type="text/template" />` blocks in your markup.
+If you prefer to have all your templates stored in the DOM (as opposed to loading them from external files) then you can just call `$.Mustache.addFromDom()` without any arguments, this will read in all templates from any `<script type="text/html" />` blocks in your markup.
 
 There are two ways to render a Mustache template, either via the global `$.Mustache.render()` method or via the jQuery `mustache` selector:
 
