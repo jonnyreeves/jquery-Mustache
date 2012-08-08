@@ -194,7 +194,7 @@
 	 * @param options.method	jQuery method to use when rendering, defaults to 'append'.
 	 */
 	$.fn.mustache = function (templateName, templateData, options) {
-        var settings = $.extend({
+        	var settings = $.extend({
 			method:	'append'
 		}, options);
 
