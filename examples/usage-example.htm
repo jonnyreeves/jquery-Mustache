@@ -51,6 +51,14 @@
 						var peeps = [{ name: "sean", fuel: "cake" }, { name: "cat", fuel: "coffee" }];
 						output.append('<ul/>').mustache('peeps-list-item', peeps);
 					});
+
+				// Load a single template.
+				$.Mustache.load('single-template.htm')
+					.done(function () {
+						var output = $('#external-templates-output');
+
+						output.append($.Mustache.render('single-template', { name: "Dave" }));
+					});
 				
 			})(jQuery);
 		</script>
