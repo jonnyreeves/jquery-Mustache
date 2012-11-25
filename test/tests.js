@@ -117,7 +117,7 @@ QUnit.test("remove() does what it says on the tin", function () {
 	
 	this.stub($, 'error');
 	$.Mustache.render('name');
-	
+
 	QUnit.ok($.error.calledOnce);
 });
 
@@ -137,4 +137,14 @@ QUnit.test("Templates are trimmed of leading and trailing whitespace when added"
 	
 	$.Mustache.add('name', source);
 	QUnit.equal($.Mustache.render('name'), expected);
+});
+
+QUnit.test("externalTemplateDataType respected when external templates are loaded", function () {
+	this.stub($, 'ajax');	
+	$.ajax.returns($.Deferred());
+
+	$.Mustache.options.externalTemplateDataType = "html";
+	$.Mustache.load("template_url");
+
+	QUnit.equal($.ajax.firstCall.args[0].dataType, "html", "externalTemplateDataType passed to jQuery.ajax()");
 });

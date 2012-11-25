@@ -1,6 +1,10 @@
 /**
  * jQuery Mustache Plugin v0.2.3
+<<<<<<< HEAD
  *
+=======
+ * 
+>>>>>>> Allow external template dataType to be specified (Github Issue #8)
  * @author Jonny Reeves (http://jonnyreeves.co.uk/)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -34,7 +38,10 @@
 
 			// The 'type' attribute which you use to denoate a Mustache Template in the DOM; eg:
 			// `<script type="text/html" id="my-template"></script>`
-			domTemplateType: 'text/html'
+			domTemplateType: 'text/html',
+
+			// Specifies the `dataType` attribute used when external templates are loaded.
+			externalTemplateDataType: 'text'
 		};
 
 	function getMustache() {
@@ -147,18 +154,18 @@
 	 *						ready for use.
 	 */
 	function load(url, onComplete) {
-		return $.get(url)
-				.done(function (templates) {
-					$(templates).filter('script').each(function () {
-						if (this.id) {
-							add(this.id, $(this).html());
-						}
-					});
-
-					if ($.isFunction(onComplete)) {
-						onComplete();
-					}
+			$.ajax({
+				url: url,
+				dataType: options.externalTemplateDataType
+			}).done(function (templates) {
+				$(templates).filter('script').each(function (i, el) {
+					add(el.id, $(el).html().trim());
 				});
+
+				if ($.isFunction(onComplete)) {
+					onComplete();
+				}
+			});
 	}
 
 	/**
