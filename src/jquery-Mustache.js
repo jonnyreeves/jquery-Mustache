@@ -1,10 +1,6 @@
 /**
  * jQuery Mustache Plugin v0.2.3
-<<<<<<< HEAD
- *
-=======
  * 
->>>>>>> Allow external template dataType to be specified (Github Issue #8)
  * @author Jonny Reeves (http://jonnyreeves.co.uk/)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
