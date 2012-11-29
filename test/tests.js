@@ -4,7 +4,7 @@
 // missing here (eg: how to get a fresh instance of $.Mustache on each run) then please enlighten me!
 var defaultOptions = $.extend({}, $.Mustache.options);
 
-module("jQuery-Mustache", { 
+QUnit.module("jQuery-Mustache", { 
 	setup: function () {
 		
 	},

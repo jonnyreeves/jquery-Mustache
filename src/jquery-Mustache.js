@@ -191,13 +191,13 @@
 	 * Renders one or more viewModels into the current jQuery element.
 	 *
 	 * @param templateName	The name of the Mustache template you wish to render, Note that the
-	 *						Template must have 	been previously loaded and / or added.
+	 *						template must have been previously loaded and / or added.
 	 * @param templateData	One or more JavaScript objects which will be used to render the Mustache
-	 * 						template.
+	 *						template.
 	 * @param options.method	jQuery method to use when rendering, defaults to 'append'.
 	 */
 	$.fn.mustache = function (templateName, templateData, options) {
-        	var settings = $.extend({
+		var settings = $.extend({
 			method:	'append'
 		}, options);
 
