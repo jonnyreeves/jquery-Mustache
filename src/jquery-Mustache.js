@@ -155,7 +155,7 @@
 				dataType: options.externalTemplateDataType
 			}).done(function (templates) {
 				$(templates).filter('script').each(function (i, el) {
-					add(el.id, $(el).html().trim());
+					add(el.id, $(el).html());
 				});
 
 				if ($.isFunction(onComplete)) {
