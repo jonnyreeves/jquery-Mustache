@@ -4,3 +4,6 @@
 
 # OS Junk
 .DS_Store
+
+# Build artifactos
+dist/
