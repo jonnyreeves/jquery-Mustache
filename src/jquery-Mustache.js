@@ -150,7 +150,7 @@
 	 *						ready for use.
 	 */
 	function load(url, onComplete) {
-			$.ajax({
+		return $.ajax({
 				url: url,
 				dataType: options.externalTemplateDataType
 			}).done(function (templates) {

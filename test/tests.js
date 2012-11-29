@@ -148,3 +148,24 @@ QUnit.test("externalTemplateDataType respected when external templates are loade
 
 	QUnit.equal($.ajax.firstCall.args[0].dataType, "html", "externalTemplateDataType passed to jQuery.ajax()");
 });
+
+QUnit.test("load() returns a Promise object", function () {
+	this.stub($, 'ajax');
+	$.ajax.returns($.Deferred());
+	
+	QUnit.equal(typeof $.Mustache.load("template_url").done, "function", "$.Mustache.load returns a Promise object");
+});
+
+QUnit.test("load() parses response and adds templtes contained in script blocks", function () {
+	var promise = $.Deferred();
+	var mockTemplates = $("<script id='template_a' /><script id='template_b' />");
+	var expected = [ 'template_a', 'template_b' ];
+			
+	this.stub($, 'ajax');
+	$.ajax.returns(promise);
+	
+	$.Mustache.load("template_url");
+	promise.resolve(mockTemplates);
+	
+	QUnit.deepEqual($.Mustache.templates().sort(), expected);
+});
