@@ -46,7 +46,7 @@
 		if (instance === null) {
 			instance = window.Mustache;
 			if (instance === void 0) {
-				$.error("Failed to locate Mustache instance, are you sure it has been loaded?");
+				$.error("Failed to locate Mustache. It looks like you failed to load mustache.js before jquery-Mustache.js");
 			}
 		}
 		return instance;
