@@ -5,9 +5,12 @@
 var defaultOptions = $.extend({}, $.Mustache.options);
 
 QUnit.module("jQuery-Mustache", { 
+	_appendedElements: [],
+
 	setup: function () {
-		
+		this._appendedElements.length = 0;
 	},
+
 	teardown: function () {
 		// Clear all templates.
 		$.Mustache.clear();
@@ -16,6 +19,16 @@ QUnit.module("jQuery-Mustache", {
 		$.each(defaultOptions, function (key, val) {
 			$.Mustache.options[key] = val;
 		});
+
+		// Remove all Elements we added to the DOM.
+		this._appendedElements.forEach(function (el) {
+			el.remove();
+		});
+	},
+
+	_appendElementTo: function (scriptTag, container) {
+		container.append(scriptTag);
+		this._appendedElements.push(scriptTag);
 	}
 });
 
@@ -168,4 +181,40 @@ QUnit.test("load() parses response and adds templtes contained in script blocks"
 	promise.resolve(mockTemplates);
 	
 	QUnit.deepEqual($.Mustache.templates().sort(), expected);
+});
+
+QUnit.test("loadFromDom() specified template added", function () {
+	this._appendElementTo($("<script type='text/html' id='template_a' />"), $("body"));
+	this._appendElementTo($("<script type='text/html' id='template_b' />"), $("body"));
+	
+	$.Mustache.addFromDom("template_b");
+
+	QUnit.deepEqual($.Mustache.templates(), [ "template_b" ]);
+});
+
+QUnit.test("loadFromDom() error raised if named template not found", function () {
+	this.stub($, "error");
+
+	$.Mustache.addFromDom("non_existant");
+
+	QUnit.ok($.error.calledOnce);
+});
+
+QUnit.test("loadFromDom() all templates added if non specified", function () {
+	this._appendElementTo($("<script type='text/html' id='template_a' />"), $("body"));
+	this._appendElementTo($("<script type='text/html' id='template_b' />"), $("body"));
+	
+	$.Mustache.addFromDom();
+
+	QUnit.deepEqual($.Mustache.templates().sort(), [ "template_a", "template_b" ]);
+});
+
+QUnit.test("loadFromDom() only adds templates of the target domTemplateType from the `options` object", function () {
+	this._appendElementTo($("<script type='text/jonnyScript' id='template_a'>"), $("body"));
+	this._appendElementTo($("<script type='text/daveScript' id='template_b'>"), $("body"));
+	
+	$.Mustache.options.domTemplateType = "text/jonnyScript";
+	$.Mustache.addFromDom();
+
+	QUnit.deepEqual($.Mustache.templates(), [ "template_a" ]);
 });

@@ -79,14 +79,16 @@
 	 * Adds one or more tempaltes from the DOM using either the supplied templateElementIds or by retrieving all script
 	 * tags of the 'domTemplateType'.  Templates added in this fashion will be registered with their elementId value.
 	 *
-	 * @param templateElementId	ElementId of a script block which contains the template you wish to add
+	 * @param [...templateElementIds]	List of element id's present on the DOM which contain templates to be added; 
+	 *									if none are supplied all script tags that are of the same type as the 
+	 *									`options.domTemplateType` configuration value will be added.
 	 */
 	function addFromDom() {
 		var templateElementIds;
 
 		// If no args are supplied, all script blocks will be read from the document.
 		if (arguments.length === 0) {
-			templateElementIds = $('body script').filter('[type="' + options.domTemplateType + '"]').map(function () {
+			templateElementIds = $('body script[type="' + options.domTemplateType + '"]').map(function () {
 				return this.id;
 			});
 		}
@@ -96,7 +98,7 @@
 
 		$.each(templateElementIds, function() {
 			var templateHtml = $('#' + this).html();
-			if (templateHtml === void 0) {
+			if (templateHtml === null) {
 				$.error('No such elementId: #' + this);
 			}
 			else {
