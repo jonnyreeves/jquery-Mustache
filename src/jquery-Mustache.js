@@ -88,7 +88,7 @@
 
 		// If no args are supplied, all script blocks will be read from the document.
 		if (arguments.length === 0) {
-			templateElementIds = $('body script[type="' + options.domTemplateType + '"]').map(function () {
+			templateElementIds = $('script[type="' + options.domTemplateType + '"]').map(function () {
 				return this.id;
 			});
 		}

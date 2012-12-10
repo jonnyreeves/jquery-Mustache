@@ -218,3 +218,11 @@ QUnit.test("loadFromDom() only adds templates of the target domTemplateType from
 
 	QUnit.deepEqual($.Mustache.templates(), [ "template_a" ]);
 });
+
+QUnit.test("loadFromDom() can parse script tags from anywhere on the DOM", function () {
+	this._appendElementTo($("<script type='text/html' id='dom_template'>"), $("html"));
+	
+	$.Mustache.addFromDom();
+
+	QUnit.deepEqual($.Mustache.templates(), [ "dom_template" ]);
+});
