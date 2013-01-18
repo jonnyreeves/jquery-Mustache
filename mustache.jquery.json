@@ -1,7 +1,7 @@
 {
-    "name": "jquery-Mustache",
-    "version": "0.2.5",
-    "title": "jQuery.Mustache Plugin",
+    "name": "mustache",
+    "version": "0.2.6",
+    "title": "jQuery Mustache",
     "author": {
         "name": "Jonny Reeves",
         "url": "http://jonnyreeves.co.uk/"
@@ -22,6 +22,8 @@
         "template",
         "templating"
     ],
+	"docs": "https://github.com/jonnyreeves/jquery-Mustache/wiki",
+	"bugs": "https://github.com/jonnyreeves/jquery-Mustache/issues",
     "homepage": "https://github.com/jonnyreeves/jquery-Mustache",
     "maintainers": [
         {

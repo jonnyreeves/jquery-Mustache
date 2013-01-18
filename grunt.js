@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    pkg: '<json:package.json>',
+    pkg: '<json:mustache.jquery.json>',
 	meta: {
         banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
             '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -17,10 +17,16 @@ module.exports = function(grunt) {
     qunit: {
       files: ['test/**/*.html']
     },
+	concat: {
+      dist: {
+        src: ['<banner:meta.banner>', 'src/jquery.<%= pkg.name %>.js'],
+        dest: 'jquery.<%= pkg.name %>.js'
+      }
+    },
 	min: {
       dist: {
-        src: ['<banner:meta.banner>', 'src/<%= pkg.name %>.js'],
-        dest: 'dist/<%= pkg.name %>.min.js'
+        src: ['jquery.<%= pkg.name %>.js'],
+        dest: 'dist/jquery.<%= pkg.name %>.min.js'
       }
     },
     watch: {
@@ -47,5 +53,6 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit min');
+  grunt.registerTask('default', 'lint concat qunit');
+  grunt.registerTask('dist', 'default min');
 };
