@@ -1,6 +1,7 @@
 # IDE junk
 .settings
 .project
+.idea
 
 # OS Junk
 .DS_Store
