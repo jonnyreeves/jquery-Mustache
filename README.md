@@ -1,6 +1,6 @@
 # jQuery-Mustache - A jQuery Plugin for working with Mustache.js
 
-[jQuery-Mustache.js](https://github.com/jonnyreeves/jquery-Mustache/blob/master/src/jquery-Mustache.js) is a jQuery Plugin which makes working light work of using the Mustache templating engine via a bit of jQuery magic.
+[jQuery-Mustache.js](https://github.com/jonnyreeves/jquery-Mustache/blob/master/jquery.mustache.js) is a jQuery Plugin which makes working light work of using the Mustache templating engine via a bit of jQuery magic.
 
 ## Installation
 jQuery-Mustache has two dependencies:
@@ -11,7 +11,7 @@ jQuery-Mustache has two dependencies:
 As with all jQuery plugins, just ensure that you load jQuery before you load jQuery-mustache.js, for example:
 
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
-    <script src="https://raw.github.com/jonnyreeves/jquery-Mustache/master/src/jquery-Mustache.js"></script>
+    <script src="https://raw.github.com/jonnyreeves/jquery-Mustache/master/jquery.mustache.js"></script>
     <script src="https://raw.github.com/janl/mustache.js/master/mustache.js"></script>
 
 ## Usage
