@@ -29,7 +29,17 @@ QUnit.module("jQuery-Mustache", {
 	_appendElementTo: function (scriptTag, container) {
 		container.append(scriptTag);
 		this._appendedElements.push(scriptTag);
-	}
+	},
+
+    hasTemplates: function (instance, expectedTemplateNames) {
+        var actualTemplateNames = instance.templates().map(function (value, key) {
+            return key;
+        });
+
+        return $.grep(expectedTemplateNames, function (value) {
+            return actualTemplateNames.indexOf(value);
+        }).length === expectedTemplateNames.length;
+    }
 });
 
 QUnit.test("Mustache plugin exposed on jQuery", function () { 
@@ -172,15 +182,14 @@ QUnit.test("load() returns a Promise object", function () {
 QUnit.test("load() parses response and adds templtes contained in script blocks", function () {
 	var promise = $.Deferred();
 	var mockTemplates = $("<script id='template_a' /><script id='template_b' />");
-	var expected = [ 'template_a', 'template_b' ];
-			
+
 	this.stub($, 'ajax');
 	$.ajax.returns(promise);
 	
 	$.Mustache.load("template_url");
 	promise.resolve(mockTemplates);
-	
-	QUnit.deepEqual($.Mustache.templates().sort(), expected);
+
+    QUnit.ok(this.hasTemplates($.Mustache, [ "template_a", "template_b" ]));
 });
 
 QUnit.test("loadFromDom() specified template added", function () {
@@ -189,7 +198,7 @@ QUnit.test("loadFromDom() specified template added", function () {
 	
 	$.Mustache.addFromDom("template_b");
 
-	QUnit.deepEqual($.Mustache.templates(), [ "template_b" ]);
+    QUnit.ok(this.hasTemplates($.Mustache, [ "template_b" ]));
 });
 
 QUnit.test("loadFromDom() error raised if named template not found", function () {
@@ -206,7 +215,7 @@ QUnit.test("loadFromDom() all templates added if non specified", function () {
 	
 	$.Mustache.addFromDom();
 
-	QUnit.deepEqual($.Mustache.templates().sort(), [ "template_a", "template_b" ]);
+    QUnit.ok(this.hasTemplates($.Mustache, [ "template_a", "template_b" ]));
 });
 
 QUnit.test("loadFromDom() only adds templates of the target domTemplateType from the `options` object", function () {
@@ -216,7 +225,7 @@ QUnit.test("loadFromDom() only adds templates of the target domTemplateType from
 	$.Mustache.options.domTemplateType = "text/jonnyScript";
 	$.Mustache.addFromDom();
 
-	QUnit.deepEqual($.Mustache.templates(), [ "template_a" ]);
+    QUnit.ok(this.hasTemplates($.Mustache, [ "template_a" ]));
 });
 
 QUnit.test("loadFromDom() can parse script tags from anywhere on the DOM", function () {
@@ -224,5 +233,14 @@ QUnit.test("loadFromDom() can parse script tags from anywhere on the DOM", funct
 	
 	$.Mustache.addFromDom();
 
-	QUnit.deepEqual($.Mustache.templates(), [ "dom_template" ]);
+    QUnit.ok(this.hasTemplates($.Mustache, [ "dom_template" ]));
+});
+
+QUnit.test("loadFromDom() handles escape characters and jQuery selector's in template element ids", function () {
+    this._appendElementTo($("<script type='text/html' id='with/slash' />"), $("body"));
+    this._appendElementTo($("<script type='text/html' id='with.dot' />"), $("body"));
+
+    $.Mustache.addFromDom();
+
+    QUnit.ok(this.hasTemplates($.Mustache, [ "with/slash", "with.dot" ]));
 });

@@ -78,13 +78,14 @@
 		}
 
 		$.each(templateElementIds, function() {
-			var templateHtml = $('#' + this).html();
-			if (typeof templateHtml === 'string') {
-                add(this, templateHtml);
-			}
-			else {
+			var templateElement = document.getElementById(this);
+
+            if (templateElement === null) {
                 $.error('No such elementId: #' + this);
-			}
+            }
+            else {
+                add(this, $(templateElement).html());
+            }
 		});
 	}
 

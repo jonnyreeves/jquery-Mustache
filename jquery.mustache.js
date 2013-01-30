@@ -1,4 +1,4 @@
-/*! jQuery Mustache - v0.2.6 - 2013-01-30
+/*! jQuery Mustache - v0.2.7 - 2013-01-30
 * https://github.com/jonnyreeves/jquery-Mustache
 * Copyright (c) 2013 Jonny Reeves; Licensed MIT */
 
@@ -82,13 +82,14 @@
 		}
 
 		$.each(templateElementIds, function() {
-			var templateHtml = $('#' + this).html();
-			if (typeof templateHtml === 'string') {
-                add(this, templateHtml);
-			}
-			else {
+			var templateElement = document.getElementById(this);
+
+            if (templateElement === null) {
                 $.error('No such elementId: #' + this);
-			}
+            }
+            else {
+                add(this, $(templateElement).html());
+            }
 		});
 	}
 
