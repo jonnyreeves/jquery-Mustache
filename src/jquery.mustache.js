@@ -78,7 +78,7 @@
 		}
 
 		$.each(templateElementIds, function() {
-			var templateHtml = $('#' + this).html();
+			var templateHtml = $(document.getElementById(this)).html();
 			if (templateHtml === null) {
 				$.error('No such elementId: #' + this);
 			}
