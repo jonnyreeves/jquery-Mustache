@@ -160,6 +160,12 @@
 			return key;
 		});
 	}
+	
+	// Returns the template map. 
+	// Useful to use the templates with Hogan.JS and similar libraries.
+	function getTemplate(templateName) {
+	  return templateMap[templateName];
+	}	
 
 	// Expose the public methods on jQuery.Mustache
 	$.Mustache = {
@@ -171,8 +177,9 @@
 		clear: clear,
 		render: render,
 		templates: templates,
+		getTemplate: getTemplate,
 		instance: instance
-	};
+	};	
 
 	/**
 	 * Renders one or more viewModels into the current jQuery element.
