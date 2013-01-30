@@ -79,11 +79,11 @@
 
 		$.each(templateElementIds, function() {
 			var templateHtml = $('#' + this).html();
-			if (templateHtml === null) {
-				$.error('No such elementId: #' + this);
+			if (typeof templateHtml === 'string') {
+                add(this, templateHtml);
 			}
 			else {
-				add(this, templateHtml);
+                $.error('No such elementId: #' + this);
 			}
 		});
 	}
