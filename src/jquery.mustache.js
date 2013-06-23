@@ -1,8 +1,8 @@
 /*global jQuery, window */
 (function ($, window) {
-    'use strict';
+	'use strict';
 
-    var templateMap = {},
+	var templateMap = {},
 		instance = null,
 		options = {
 			// Should an error be thrown if an attempt is made to render a non-existent template.  If false, the
@@ -80,12 +80,12 @@
 		$.each(templateElementIds, function() {
 			var templateElement = document.getElementById(this);
 
-            if (templateElement === null) {
-                $.error('No such elementId: #' + this);
-            }
-            else {
-                add(this, $(templateElement).html());
-            }
+			if (templateElement === null) {
+				$.error('No such elementId: #' + this);
+			}
+			else {
+				add(this, $(templateElement).html());
+			}
 		});
 	}
 
