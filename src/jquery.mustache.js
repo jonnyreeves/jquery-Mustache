@@ -34,7 +34,7 @@
 	}
 
 	/**
-	 * Returns true if the supplied templateName has been added.
+	 * @return {boolean} if the supplied templateName has been added.
 	 */
 	function has(templateName) {
 		return templateMap[templateName] !== void 0;
@@ -162,6 +162,7 @@
 	$.Mustache = {
 		options: options,
 		load: load,
+		has: has,
 		add: add,
 		addFromDom: addFromDom,
 		remove: remove,

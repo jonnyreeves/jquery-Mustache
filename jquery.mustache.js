@@ -1,12 +1,12 @@
-/*! jQuery Mustache - v0.2.7 - 2013-01-30
+/*! jQuery Mustache - v0.2.8 - 2013-06-23
 * https://github.com/jonnyreeves/jquery-Mustache
 * Copyright (c) 2013 Jonny Reeves; Licensed MIT */
 
 /*global jQuery, window */
 (function ($, window) {
-    'use strict';
+	'use strict';
 
-    var templateMap = {},
+	var templateMap = {},
 		instance = null,
 		options = {
 			// Should an error be thrown if an attempt is made to render a non-existent template.  If false, the
@@ -38,7 +38,7 @@
 	}
 
 	/**
-	 * Returns true if the supplied templateName has been added.
+	 * @return {boolean} if the supplied templateName has been added.
 	 */
 	function has(templateName) {
 		return templateMap[templateName] !== void 0;
@@ -84,12 +84,12 @@
 		$.each(templateElementIds, function() {
 			var templateElement = document.getElementById(this);
 
-            if (templateElement === null) {
-                $.error('No such elementId: #' + this);
-            }
-            else {
-                add(this, $(templateElement).html());
-            }
+			if (templateElement === null) {
+				$.error('No such elementId: #' + this);
+			}
+			else {
+				add(this, $(templateElement).html());
+			}
 		});
 	}
 
@@ -166,6 +166,7 @@
 	$.Mustache = {
 		options: options,
 		load: load,
+		has: has,
 		add: add,
 		addFromDom: addFromDom,
 		remove: remove,

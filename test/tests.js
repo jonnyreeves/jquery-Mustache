@@ -244,3 +244,11 @@ QUnit.test("loadFromDom() handles escape characters and jQuery selector's in tem
 
     QUnit.ok(this.hasTemplates($.Mustache, [ "with/slash", "with.dot" ]));
 });
+
+QUnit.test("has() can be used to query the presence of registered templates", function ()
+{
+	$.Mustache.add('added_template', 'a');
+
+	QUnit.equal($.Mustache.has("non_existent"), false);
+	QUnit.equal($.Mustache.has("added_template"), true);
+});

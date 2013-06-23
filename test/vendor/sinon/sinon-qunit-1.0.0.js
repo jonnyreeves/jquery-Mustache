@@ -41,8 +41,7 @@ sinon.assert.pass = function (assertion) {
 };
 
 sinon.config = {
-    injectIntoThis: true,
-    injectInto: null,
+    injectIntoThis: false,
     properties: ["spy", "stub", "mock", "clock", "sandbox"],
     useFakeTimers: true,
     useFakeServer: false
@@ -50,6 +49,51 @@ sinon.config = {
 
 (function (global) {
     var qTest = QUnit.test;
+	var activeSandbox = null;
+	var activeSandboxConfig = null;
+
+	var runTestInSandbox = function (test) {
+		return function () {
+			var exception, result;
+			var args = Array.prototype.slice.call(arguments).concat(activeSandbox.args);
+
+			if (activeSandboxConfig.useFakeTimers) {
+				global.setTimeout = activeSandbox.clock.setTimeout;
+			}
+
+			try {
+				result = test.apply(this, args);
+			} catch (e) {
+				exception = e;
+			}
+
+			if (typeof exception !== "undefined") {
+				activeSandbox.restore();
+				throw exception;
+			}
+			else {
+				activeSandbox.verifyAndRestore();
+			}
+
+			return result;
+		};
+	};
+
+	QUnit.testStart(function () {
+		activeSandboxConfig = sinon.getConfig(sinon.config);
+		activeSandboxConfig.injectInto = QUnit.config.current.testEnvironment;
+
+		activeSandbox = sinon.sandbox.create(activeSandboxConfig);
+
+		// Restore the native setTimeout method as it's used internally by QUnit.
+		if (activeSandboxConfig.useFakeTimers) {
+			global.setTimeout = sinon.timers.setTimeout;
+		}
+	});
+
+	QUnit.testDone(function () {
+		activeSandbox = null;
+	});
 
     QUnit.test = global.test = function (testName, expected, callback, async) {
         if (arguments.length === 2) {
@@ -57,6 +101,6 @@ sinon.config = {
             expected = null;
         }
 
-        return qTest(testName, expected, sinon.test(callback), async);
+        return qTest(testName, expected, runTestInSandbox(callback), async);
     };
 }(this));
