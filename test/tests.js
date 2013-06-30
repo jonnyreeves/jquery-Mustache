@@ -252,3 +252,144 @@ QUnit.test("has() can be used to query the presence of registered templates", fu
 	QUnit.equal($.Mustache.has("non_existent"), false);
 	QUnit.equal($.Mustache.has("added_template"), true);
 });
+
+QUnit.test("$(el).mustache method can be invoked with two arguments", function ()
+{
+	var el = document.createElement("div");
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	$(el).mustache("template_a", { name: "Dave" });
+
+	QUnit.equal(el.innerText, "Hello Dave");
+});
+
+QUnit.test("When $(el).mustache is invoked with two arguments, it defaults to use jQuery.append", function ()
+{
+	var el = document.createElement("div");
+	el.innerText = "pre-existing content";
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	$(el).mustache("template_a", { name: "Dave" });
+
+	QUnit.equal(el.innerText, "pre-existing contentHello Dave");
+});
+
+QUnit.test("$(el).mustache can be invoked with three arguments, the last being a setting object which allows you to specify the jQuery method to use", function ()
+{
+	var el = document.createElement("div");
+	el.innerText = "pre-existing content";
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	$(el).mustache("template_a", { name: "Dave" }, { method: "replace" });
+
+	QUnit.equal(el.innerText, "Hello Dave");
+});
+
+QUnit.test("$(el).mustache returns a jQuery collection for the host element so calls can be chained", function ()
+{
+	var el = document.createElement("div");
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	$(el)
+		.mustache("template_a", { name: "Dave" })
+		.mustache("template_a", { name: "Jim" });
+
+	QUnit.equal(el.innerText, "Hello DaveHello Jim");
+});
+
+QUnit.test("$(el).mustache method can be invoked with a single, object argument", function ()
+{
+	var el = document.createElement("div");
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	$(el).mustache({
+		template: "template_a",
+		data: { name: "Dave" }
+	});
+
+	QUnit.equal(el.innerText, "Hello Dave");
+});
+
+QUnit.test("$(el).mustache can be used to prepend the rendered template to the host element", function ()
+{
+	var el = document.createElement("div");
+	el.innerText = "pre-existing content";
+
+	$.Mustache.add("template_a", "Hello {{name}}:");
+
+	$(el).mustache({
+		template: "template_a",
+		data: { name: "Dave" },
+		method: "prepend"
+	});
+
+	QUnit.equal(el.innerText, "Hello Dave:pre-existing content");
+});
+
+QUnit.test("$(el).mustache can be used to replace the contents of the host element with the contents of the rendered template", function ()
+{
+	var el = document.createElement("div");
+	el.innerText = "pre-existing content";
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	$(el).mustache({
+		template: "template_a",
+		data: { name: "Dave" },
+		method: "replace"
+	});
+
+	QUnit.equal(el.innerText, "Hello Dave");
+});
+
+QUnit.test("$(el).mustache can be used to append the contents of the host element with the contents of the rendered template", function ()
+{
+	var el = document.createElement("div");
+	el.innerText = "pre-existing content";
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	$(el).mustache({
+		template: "template_a",
+		data: { name: "Dave" },
+		method: "append"
+	});
+
+	QUnit.equal(el.innerText, "pre-existing contentHello Dave");
+});
+
+QUnit.test("$(el).mustache defaults to appending the template to the contents of the host element", function ()
+{
+	var el = document.createElement("div");
+	el.innerText = "pre-existing content";
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	$(el).mustache({
+		template: "template_a",
+		data: { name: "Dave" }
+	});
+
+	QUnit.equal(el.innerText, "pre-existing contentHello Dave");
+});
+
+QUnit.test("$(el).mustache throws an error if an invalid method is supplied", function ()
+{
+	var el = document.createElement("div");
+
+	$.Mustache.add("template_a", "Hello {{name}}");
+
+	QUnit.throws(function ()
+	{
+		$(el).mustache({
+			template: "template_a",
+			data: { name: "Dave" },
+			method: "non-existant-method"
+		}, /non-existant-method/);
+	});
+});

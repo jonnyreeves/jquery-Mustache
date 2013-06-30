@@ -1,4 +1,4 @@
-/*! jQuery Mustache - v0.2.8 - 2013-06-23
+/*! jQuery Mustache - v0.3.0 - 2013-06-30
 * https://github.com/jonnyreeves/jquery-Mustache
 * Copyright (c) 2013 Jonny Reeves; Licensed MIT */
 
@@ -162,6 +162,42 @@
 		});
 	}
 
+	function renderTemplateIntoElement(element, options) {
+		var renderTemplate = function (viewModel) {
+			element[options.method](render(options.template, viewModel));
+		};
+
+		return element.each(function () {
+			if ($.isArray(options.data)) {
+				$.each(options.data, function () {
+					renderTemplate(this);
+				});
+			}
+			else {
+				renderTemplate(options.data);
+			}
+		});
+	}
+
+	function normalisejQueryInsertionMethod(value) {
+		var result;
+
+		if (typeof value !== "string") {
+			result = "append";
+		}
+		else if (value === "append" || value === "prepend" || value === "html") {
+			result = value;
+		}
+		else if (value === "replace") {
+			result = "html";
+		}
+		else {
+			$.error("Unrecognised method supplied to `$(el).mustache`: " + value);
+		}
+
+		return result;
+	}
+
 	// Expose the public methods on jQuery.Mustache
 	$.Mustache = {
 		options: options,
@@ -176,39 +212,27 @@
 		instance: instance
 	};
 
-	/**
-	 * Renders one or more viewModels into the current jQuery element.
-	 *
-	 * @param templateName	The name of the Mustache template you wish to render, Note that the
-	 *						template must have been previously loaded and / or added.
-	 * @param templateData	One or more JavaScript objects which will be used to render the Mustache
-	 *						template.
-	 * @param options.method	jQuery method to use when rendering, defaults to 'append'.
-	 */
-	$.fn.mustache = function (templateName, templateData, options) {
-		var settings = $.extend({
-			method:	'append'
-		}, options);
+	$.fn.mustache = function (optionsOrTemplateName, templateData, options) {
+		var normalisedOptions;
 
-		var renderTemplate = function (obj, viewModel) {
-			$(obj)[settings.method](render(templateName, viewModel));
-		};
+		if (typeof optionsOrTemplateName === "string" && templateData) {
+			normalisedOptions = {
+				template: optionsOrTemplateName,
+				data: templateData
+			};
 
-		return this.each(function () {
-			var element = this;
-
-			// Render a collection of viewModels.
-			if ($.isArray(templateData)) {
-				$.each(templateData, function () {
-					renderTemplate(element, this);
-				});
+			// Note that the third `options` param is deprecated and will be removed in future versions.
+			if (options && typeof options === "object") {
+				normalisedOptions.method = options.method;
 			}
+		}
+		else {
+			normalisedOptions = optionsOrTemplateName;
+		}
 
-			// Render a single viewModel.
-			else {
-				renderTemplate(element, templateData);
-			}
-		});
+		normalisedOptions.method = normalisejQueryInsertionMethod(normalisedOptions.method);
+
+		return renderTemplateIntoElement(this, normalisedOptions);
 	};
 
 }(jQuery, window));
