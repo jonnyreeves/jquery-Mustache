@@ -140,16 +140,16 @@
 	function load(url, onComplete) {
 		return $.ajax({
 				url: url,
-				dataType: options.externalTemplateDataType
-			}).done(function (templates) {
-				$(templates).filter('script').each(function (i, el) {
-					add(el.id, $(el).html());
-				});
-
-				if ($.isFunction(onComplete)) {
-					onComplete();
-				}
-			});
+				dataType: options.externalTemplateDataType,
+		    done:function (templates) {
+          		$(templates).filter('script').each(function (i, el) {
+           			 add(el.id, $(el).html());
+          		});
+         	 if ($.isFunction(onComplete)) {
+            		onComplete();
+        	  }
+       		 }
+	});
 	}
 
 	/**
