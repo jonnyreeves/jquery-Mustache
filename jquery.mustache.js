@@ -211,4 +211,27 @@
 		});
 	};
 
+    /**
+     * Allows you to load a template and render it in one step, e.g.
+     *      $("#Placeholder").load("template-url.html", viewData);
+     *
+     * @param url
+     * @param templateData
+     * @param settings      optional, default to method: 'html', i.e. using jQuery's .html() to render the template
+     * @param templateName  optional, defaults to the first template in the file
+     * @param onComplete    optional
+     */
+    $.fn.load = function (url, templateData, settings, templateName, onComplete) {
+        var self = this;
+        settings = $.extend({
+            method: 'html'
+        }, settings);
+
+        templateName = templateName === null ? $.Mustache.templates()[0] : templateName;
+
+        $.Mustache.load(url, onComplete)
+            .done(function () {
+                self.mustache(templateName, templateData, settings);
+            });
+    };
 }(jQuery, window));

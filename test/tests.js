@@ -179,7 +179,7 @@ QUnit.test("load() returns a Promise object", function () {
 	QUnit.equal(typeof $.Mustache.load("template_url").done, "function", "$.Mustache.load returns a Promise object");
 });
 
-QUnit.test("load() parses response and adds templtes contained in script blocks", function () {
+QUnit.test("load() parses response and adds templates contained in script blocks", function () {
 	var promise = $.Deferred();
 	var mockTemplates = $("<script id='template_a' /><script id='template_b' />");
 
@@ -251,4 +251,14 @@ QUnit.test("has() can be used to query the presence of registered templates", fu
 
 	QUnit.equal($.Mustache.has("non_existent"), false);
 	QUnit.equal($.Mustache.has("added_template"), true);
+});
+
+QUnit.test("$.fn.load() calls $.Mustache.load", function() {
+    var spy = this.spy($.Mustache, 'load');
+    var templateUrl = 'template-url';
+
+    $.fn.load(templateUrl, {});
+
+    QUnit.ok(spy.calledOnce);
+    QUnit.ok(spy.calledWith(templateUrl));
 });
