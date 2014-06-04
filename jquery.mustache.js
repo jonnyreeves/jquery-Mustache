@@ -112,19 +112,44 @@
 		templateMap = {};
 		getMustache().clearCache();
 	}
+	
+	/**
+	 * Gets partials object (i.e. map {partial name -> actual template content})
+	 * as required by Mustache.
+	 */
+	function getPartialsObject(partials) {
+		var partialsObject = $.extend({}, templateMap);
+		
+		if (partials !== void 0) {
+			$.each(partials, function(partialName, templateName) {
+				if (has(templateName)) {
+					partialsObject[partialName] = templateMap[templateName];
+				}
+				else {
+					if (options.warnOnMissingTemplates) {
+						$.error('No template registered for: ' + templateName);
+					}
+					partialsObject[partialName] = '';
+				}
+			});
+		}
+
+		return partialsObject;
+	}
 
 	/**
 	 * Renders a previously added Mustache template using the supplied templateData object.  Note if the supplied
 	 * templateName doesn't exist an empty String will be returned.
 	 */
-	function render(templateName, templateData) {
+	function render(templateName, templateData, partials) {
 		if (!has(templateName)) {
 			if (options.warnOnMissingTemplates) {
 				$.error('No template registered for: ' + templateName);
 			}
 			return '';
 		}
-		return getMustache().to_html(templateMap[templateName], templateData, templateMap);
+
+		return getMustache().to_html(templateMap[templateName], templateData, getPartialsObject(partials));
 	}
 
 	/**
@@ -184,14 +209,15 @@
 	 * @param templateData	One or more JavaScript objects which will be used to render the Mustache
 	 *						template.
 	 * @param options.method	jQuery method to use when rendering, defaults to 'append'.
+	 * @param partials      Optional dynamic partials map which will be used to render the template.
 	 */
-	$.fn.mustache = function (templateName, templateData, options) {
+	$.fn.mustache = function (templateName, templateData, options, partials) {
 		var settings = $.extend({
 			method:	'append'
 		}, options);
 
 		var renderTemplate = function (obj, viewModel) {
-			$(obj)[settings.method](render(templateName, viewModel));
+			$(obj)[settings.method](render(templateName, viewModel, partials));
 		};
 
 		return this.each(function () {
