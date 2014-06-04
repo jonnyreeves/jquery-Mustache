@@ -120,7 +120,7 @@
 	function getPartialsObject(partials) {
 		var partialsObject = $.extend({}, templateMap);
 		
-	    if (partials !== void 0) {
+		if (partials !== void 0) {
 			$.each(partials, function(partialName, templateName) {
 				if (has(templateName)) {
 					partialsObject[partialName] = templateMap[templateName];
@@ -133,7 +133,7 @@
 				}
 			});
 		}
-		
+
 		return partialsObject;
 	}
 
