@@ -18,7 +18,10 @@
 			domTemplateType: 'text/html',
 
 			// Specifies the `dataType` attribute used when external templates are loaded.
-			externalTemplateDataType: 'text'
+			externalTemplateDataType: 'text',
+
+			// If set to true, it will force requested pages not to be cached by the browse, useful during development
+			forceReload: false
 		};
 
 	function getMustache() {
@@ -134,10 +137,14 @@
 	 *						ready for use.
 	 */
 	function load(url, onComplete) {
-		return $.ajax({
-				url: url,
-				dataType: options.externalTemplateDataType
-			}).done(function (templates) {
+		var _options = {
+			url: url,
+			dataType: options.externalTemplateDataType
+		};
+		if(options.forceReload) {
+			_options.cache = false;
+		}
+		return $.ajax(_options).done(function (templates) {
 				$(templates).filter('script').each(function (i, el) {
 					add(el.id, $(el).html());
 				});
