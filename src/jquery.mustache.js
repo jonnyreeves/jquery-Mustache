@@ -128,8 +128,7 @@
 	 * returns a jQuery Promise and also support an `onComplete` callback.
 	 *
 	 * @param url|settings  URL of the external Mustache template file to load, or a set of key/value pairs that 
-	 *						configure the Ajax request. All settings are optional except url. DataType setting will be
-	 *						overwrite.
+	 *						configure the Ajax request. All settings are optional except url.
 	 * @param onComplete	Optional callback function which will be invoked when the templates from the supplied URL
 	 *						have been loaded and are ready for use.
 	 * @returns				jQuery deferred promise which will complete when the templates have been loaded and are
@@ -141,7 +140,7 @@
 
 		obj = typeof url === 'object' ? obj = url: obj.url = url;
 
-		obj.dataType = options.externalTemplateDataType;
+		obj.dataType = obj.dataType || options.externalTemplateDataType;
 
 		return $.ajax(obj).done(function (templates) {
 				$(templates).filter('script').each(function (i, el) {
