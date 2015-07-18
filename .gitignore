@@ -8,3 +8,5 @@
 
 # Build artifactos
 dist/
+/nbproject/private/
+/nbproject/
