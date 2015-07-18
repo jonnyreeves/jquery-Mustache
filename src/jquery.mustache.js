@@ -127,25 +127,34 @@
 	 * Loads the external Mustache templates located at the supplied URL and registers them for later use.  This method
 	 * returns a jQuery Promise and also support an `onComplete` callback.
 	 *
-	 * @param url			URL of the external Mustache template file to load.
+	 * @param url|settings  URL of the external Mustache template file to load, or a set of key/value pairs that 
+	 *						configure the Ajax request. All settings are optional except url.
 	 * @param onComplete	Optional callback function which will be invoked when the templates from the supplied URL
 	 *						have been loaded and are ready for use.
 	 * @returns				jQuery deferred promise which will complete when the templates have been loaded and are
 	 *						ready for use.
+	 * @throws Will throw an error if url is null.
 	 */
 	function load(url, onComplete) {
-		return $.ajax({
-				url: url,
-				dataType: options.externalTemplateDataType
-			}).done(function (templates) {
-				$(templates).filter('script').each(function (i, el) {
-					add(el.id, $(el).html());
-				});
 
-				if ($.isFunction(onComplete)) {
-					onComplete();
-				}
+		if(!!url)
+			throw new Error('Url is needed');
+
+		var obj = {};
+
+		obj = typeof url === 'object' ? obj = url: obj.url = url;
+
+		obj.dataType = obj.dataType || options.externalTemplateDataType;
+
+		return $.ajax(obj).done(function (templates) {
+			$(templates).filter('script').each(function (i, el) {
+				add(el.id, $(el).html());
 			});
+
+			if ($.isFunction(onComplete)) {
+				onComplete();
+			}
+		});
 	}
 
 	/**
