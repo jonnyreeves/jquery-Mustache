@@ -133,8 +133,12 @@
 	 *						have been loaded and are ready for use.
 	 * @returns				jQuery deferred promise which will complete when the templates have been loaded and are
 	 *						ready for use.
+   * @throws Will throw an error if url is null.
 	 */
 	function load(url, onComplete) {
+
+    if(!!url)
+      throw 'Url is needed';
 
 		var obj = {};
 
