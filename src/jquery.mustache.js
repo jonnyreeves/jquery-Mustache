@@ -133,12 +133,12 @@
 	 *						have been loaded and are ready for use.
 	 * @returns				jQuery deferred promise which will complete when the templates have been loaded and are
 	 *						ready for use.
-   * @throws Will throw an error if url is null.
+	 * @throws Will throw an error if url is null.
 	 */
 	function load(url, onComplete) {
 
-    if(!!url)
-      throw 'Url is needed';
+		if(!!url)
+			throw new Error('Url is needed');
 
 		var obj = {};
 
@@ -147,14 +147,14 @@
 		obj.dataType = obj.dataType || options.externalTemplateDataType;
 
 		return $.ajax(obj).done(function (templates) {
-				$(templates).filter('script').each(function (i, el) {
-					add(el.id, $(el).html());
-				});
-
-				if ($.isFunction(onComplete)) {
-					onComplete();
-				}
+			$(templates).filter('script').each(function (i, el) {
+				add(el.id, $(el).html());
 			});
+
+			if ($.isFunction(onComplete)) {
+				onComplete();
+			}
+		});
 	}
 
 	/**
