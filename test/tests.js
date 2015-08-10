@@ -245,6 +245,12 @@ QUnit.test("loadFromDom() handles escape characters and jQuery selector's in tem
     QUnit.ok(this.hasTemplates($.Mustache, [ "with/slash", "with.dot" ]));
 });
 
+QUnit.test("load() returns a Promise object, when it was set with an object setting", function () {
+	this.stub($, 'ajax');
+	$.ajax.returns($.Deferred());
+	QUnit.equal(typeof $.Mustache.load({"url":"template_url"}).done, "function", "$.Mustache.load returns a Promise object");
+});
+
 QUnit.test("has() can be used to query the presence of registered templates", function ()
 {
 	$.Mustache.add('added_template', 'a');

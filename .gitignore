@@ -2,6 +2,7 @@
 .settings
 .project
 .idea
+nbproject/
 
 # OS Junk
 .DS_Store
