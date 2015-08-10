@@ -2,11 +2,10 @@
 .settings
 .project
 .idea
+/nbproject/
 
 # OS Junk
 .DS_Store
 
 # Build artifactos
 dist/
-/nbproject/private/
-/nbproject/
