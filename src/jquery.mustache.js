@@ -60,8 +60,8 @@
 	 * Adds one or more tempaltes from the DOM using either the supplied templateElementIds or by retrieving all script
 	 * tags of the 'domTemplateType'.  Templates added in this fashion will be registered with their elementId value.
 	 *
-	 * @param [...templateElementIds]	List of element id's present on the DOM which contain templates to be added; 
-	 *									if none are supplied all script tags that are of the same type as the 
+	 * @param [...templateElementIds]	List of element id's present on the DOM which contain templates to be added;
+	 *									if none are supplied all script tags that are of the same type as the
 	 *									`options.domTemplateType` configuration value will be added.
 	 */
 	function addFromDom() {
@@ -120,7 +120,7 @@
 			}
 			return '';
 		}
-		return getMustache().to_html(templateMap[templateName], templateData, templateMap);
+		return getMustache().render(templateMap[templateName], templateData, templateMap);
 	}
 
 	/**
