@@ -1,52 +1,52 @@
 <html>
 	<head>
-		<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js" type="text/javascript"></script>
-		<script src="https://raw.github.com/janl/mustache.js/master/mustache.js" type="text/javascript"></script>
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+		<script src="../src/mustache.js" type="text/javascript"></script>
 		<script src="../src/jquery.mustache.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			(function ($) {
 				// Configure jquery-Mustache to warn on missing templates (to aid debugging)
 				$.Mustache.options.warnOnMissingTemplates = true;
-				
+
 				// Loading templates embedded in the DOM. (HTML)
-				$(function () { 
+				$(function () {
 					var output = $('#dom-templates-output');
 
-					// Add all templates found in the DOM (it will search for <script> blocks which 
-					// are of type 'text/html'.  Nb: jQuery.onReady must have fired before calling. 
+					// Add all templates found in the DOM (it will search for <script> blocks which
+					// are of type 'text/html'.  Nb: jQuery.onReady must have fired before calling.
 					$.Mustache.addFromDom();
-					
+
 					// Render out one of the templates.
 					output.mustache('dom-template-a', { name: 'World' });
 				});
 
 				// Load in some template from an external file.
 				$.Mustache.load('templates.htm')
-					.fail(function () { 
+					.fail(function () {
 						$('#external-templates-output').append('Failed to load templates from <code>templates.htm</code>');
 					})
-					.done(function () { 
+					.done(function () {
 						var output = $('#external-templates-output');
 
 						// List all loaded templates.
 						output.append('<p>Templates loaded from <code>templates.htm</code>: ' + $.Mustache.templates().join(', ') + '</p>');
-						
+
 						// Render an example template
 						output.append($.Mustache.render('hello-world', { name: 'Jonny' }));
-	
+
 						// We can also directly call `mustache` on a jQuery element
 						output.mustache('hello-world', { name: 'Dave' });
-						
+
 						// jQuery-Mustache supports partials (including templates inside other templates).
 						output.append($.Mustache.render('partial-example', { name: 'Jonny', title: 'A Partial Example' }));
-						
+
 						// We can add new templates as Strings at runtime.
 						$.Mustache.add('string-template', '<p>String templates are {{adjective}}</p>');
 						output.append($.Mustache.render('string-template', { adjective: '...epic?' }));
-						
+
 						// And we can render plaintext templates that have no HTML.
 						output.append($.Mustache.render('plaintext'));
-	
+
 						// We can render a collection of viewModels instead of one-at-a-time.
 						var peeps = [{ name: "sean", fuel: "cake" }, { name: "cat", fuel: "coffee" }];
 						output.append('<ul/>').mustache('peeps-list-item', peeps);
@@ -59,7 +59,7 @@
 
 						output.append($.Mustache.render('single-template', { name: "Dave" }));
 					});
-				
+
 			})(jQuery);
 		</script>
 	</head>
